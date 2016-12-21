@@ -1,0 +1,16 @@
+<ion-view>
+    <ion-content>
+        <div id="floating-panel" name="GeoForm">
+        <form ng-submit="AutocompleteDirectionsHandler(fromLocation,toLocation)">
+          <input type="text" name="fromGeo" id="fromLoc" ng-model="fromLocation" autocomplete="off" ng-class="form-control" placeholder="where from?" ng-click="fromLocation = null" required ng-required="true">
+          <input type="text" name="toGeo" ng-model="toLocation" autocomplete="off" ng-class="form-control" placeholder="where to?" ng-click="toLocation = null" required ng-required="true">
+          <input type="submit" id="submit" value="Submit" class="button button-block button-positive"/>
+        </form>
+      </div>
+      <div id="map"></div>
+      <div id="directions"></div>
+    </ion-content>
+    <div class="bar bar-footer bar-assertive">
+      <button class="button button-bar" ng-click="findMeHandler()"><span class="ion-search">find me</span></button>
+    </div>
+</ion-view>

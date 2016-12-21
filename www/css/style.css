@@ -1,0 +1,26 @@
+.scroll {
+    height: 60%;
+}
+
+#map {
+    height: 600px;
+}
+
+#floating-panel {
+  position: absolute;
+  top: 10px;
+  right: 5%;
+  z-index: 5;
+  background-color: #fff;
+  padding: 5px;
+  border: 1px solid #999;
+  text-align: center;
+  font-family: 'Roboto','sans-serif';
+  line-height: 35px;
+  padding-left: 5px;
+  opacity: 0.8;
+}
+
+.ion-search {
+  font-size: 20px;
+}
