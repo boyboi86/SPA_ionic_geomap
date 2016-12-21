@@ -60,7 +60,6 @@ var geoMapping = function(latLng, latitude, longitude){
     // For random clicking for the map, includes a marker
     google.maps.event.addListener(marker, 'click', function() {
         currentPositionInfoWindow.open($scope.map, marker);
-        console.log(latitude, longitude)
         var geocoder = new google.maps.Geocoder;
         geocoder.geocode({'location': {'lat': latitude, 'lng': longitude}}, function(result){
           document.getElementById('fromLoc').value = result[1].formatted_address
@@ -95,7 +94,6 @@ function googleMap(){
   // submit form from search page
   $scope.AutocompleteDirectionsHandler = function(fromLocation, toLocation){
     fromLocation = document.getElementById('fromLoc').value;
-    console.log(fromLocation, toLocation);
 
     // Instantiate a directions service.
       var directionsService = new google.maps.DirectionsService;
@@ -147,14 +145,11 @@ function googleMap(){
         marker.setPosition(myRoute.steps[i].start_location);
         var lat = marker.getPosition().lat()
         var lng = marker.getPosition().lng()
-        console.log(lat, lng);
         Arr.push({"lat": lat, "lng": lng});
         attachInstructionText(stepDisplay, marker, myRoute.steps[i].instructions, $scope.map);
-        console.log(Arr);
       }
       var geocoder = new google.maps.Geocoder();
       geocoder.geocode({'address': toLocation}, function(results, status) {
-        console.log(results[0].geometry.location.lat(), results[0].geometry.location.lng());
         var toLocObj = {"lat": results[0].geometry.location.lat(), "lng": results[0].geometry.location.lng()}
         Arr.push(toLocObj);
 
@@ -207,20 +202,49 @@ function getDistanceFromLatLonInKm(lat1,lon1,lat2,lon2, index, totalIndex) {
     ;
   var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
   var d = R * c; // Distance in km
-  console.log(d);
+
+  $scope.locationMarker.push(d);
   if(ionic.Platform.isAndroid() === true && d <= 0.3){
     // if you are using chrome, if device set to android this will become a valid arguement
-    nativeDeviceAlarm(index, d);
+    var newIndex = index + 3;
+    nativeDeviceAlarm(newIndex, d);
   }
   if(d <= 0.3){
     index += 1;
     $cordovaDialogs.alert("You are " + d.toFixed(3) + " Km" + " away" + " from " + index + " of " + totalIndex + " check point!");
   }
-  return d;
+
+  var i = $scope.locationMarker.length;
+  var j = totalIndex * 2;
+  if(i == j){
+    sortIntoOrderToCalculate($scope.locationMarker, totalIndex);
+    $scope.locationMarker = [];
+  }
 }
 
 function deg2rad(deg) {
   return deg * (Math.PI/180)
+}
+// Calculate difference from previous distance difference against existing distance difference
+function sortIntoOrderToCalculate(Arr, index){
+  var newArr = [];
+  var sumArr = [];
+  for(i = 0; i < index; i++){
+    var newIndex = index + i;
+    var diff = Arr[i] - Arr[newIndex];
+    sumArr.push(diff);
+    if(diff <= 0){
+      newArr.push(diff);
+    }
+  }
+  var sum = sumArr.reduce(function(a,b){
+    return a + b;
+  });
+  var ave = sum / sumArr.length;
+  // this will confirm if user will be warned that they are off track!
+  if(!newArr[0] && ave >= 0.2){
+    $cordovaDialogs.alert("You are getting off-track!", "Lost!");
+  }
 }
 
 function nativeDeviceAlarm(index, dist){
@@ -252,7 +276,6 @@ function toggleNavigationTracking(){
   .catch(function(error){
     console.log("Navigation tracking not enabled!", error);
   })
-  console.log("toggleNavigationTracking intialized")
 }
 
 // trigger to have loop fn for constant GPS update
