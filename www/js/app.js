@@ -22,6 +22,7 @@ $scope.locationMarker = [];
 $scope.intervals = [];
 $window.localStorage.clear();
 $window.localStorage.setItem('navigationState', angular.toJson({"state": false, "toggle": false}))
+
 //Initialize Geolocation fn
 googleMap();
 // watchPosition is not feasible for testing, so use timeout to keep track
@@ -190,7 +191,6 @@ $scope.findMeHandler = function(){
       $scope.AutocompleteDirectionsHandler(recentSearch.from, recentSearch.to);
     }
     geoMapping(latLng, position.coords.latitude, position.coords.longitude);
-    changeToggleState()
   }, function(error){
     console.log("Could not get location");
   });
@@ -214,7 +214,7 @@ function getDistanceFromLatLonInKm(lat1,lon1,lat2,lon2, index, totalIndex) {
   }
   if(d <= 0.3){
     index += 1;
-    $cordovaDialogs.alert("You are " + d.toFixed(2) + " Km" + " away" + " from " + index + " of " + totalIndex + " check point!");
+    $cordovaDialogs.alert("You are " + d.toFixed(3) + " Km" + " away" + " from " + index + " of " + totalIndex + " check point!");
   }
   return d;
 }
@@ -227,7 +227,7 @@ function nativeDeviceAlarm(index, dist){
   // feature only available in real device
   index += 1;
   $cordovaDialogs.beep(index);
-  $cordovaDialogs.alert("You are " + dist.toFixed(2) + " Km" + " away", index + " of " + totalIndex + " check point!");
+  $cordovaDialogs.alert("You are " + dist.toFixed(3) + " Km" + " away", index + " of " + totalIndex + " check point!");
   $cordovaVibration.vibrate(2000);
 }
 
@@ -256,7 +256,7 @@ function toggleNavigationTracking(){
 }
 
 // trigger to have loop fn for constant GPS update
-function changeToggleState(){
+$scope.changeToggleState = function(){
   var navigationState = $window.localStorage.getItem('navigationState');
   var localStore = angular.fromJson(navigationState);
   var state = localStore.state
@@ -271,12 +271,14 @@ function changeToggleState(){
 
   if(state == true && toggle == true || state == 'true' && toggle == 'true'){
     $window.localStorage.setItem('navigationState', angular.toJson({"state": false, "toggle": false}));
-    $scope.stopInterval()
+    $scope.stopInterval();
+    $cordovaDialogs.alert("tracking off")
   }
 
   if(state == false && toggle == false || state == 'false' && toggle == 'false'){
     $window.localStorage.setItem('navigationState', angular.toJson({"state": true, "toggle": true}));
     $scope.startInterval()
+    $cordovaDialogs.alert("tracking on")
   }
 }
 
