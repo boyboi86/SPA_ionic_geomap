@@ -30,6 +30,39 @@
     <script src="lib/ngCordova/dist/ng-cordova.js"></script>
     <script src="cordova.js"></script>
 
+
+    <!-- AngularFire -->
+    <script src="https://cdn.firebase.com/libs/angularfire/2.2.0/angularfire.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/3.6.4/firebase.js"></script>
+    <script>
+      // Initialize Firebase
+      var config = {
+        apiKey: "AIzaSyBk0RVomOeuv8ITNz_AHSc_6DkVoP5UkYA",
+        authDomain: "geomap-c4e55.firebaseapp.com",
+        databaseURL: "https://geomap-c4e55.firebaseio.com",
+        storageBucket: "geomap-c4e55.appspot.com",
+        messagingSenderId: "1090439799052"
+      };
+      firebase.initializeApp(config);
+    </script>
+    <script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '569002386637661',
+      xfbml      : true,
+      version    : 'v2.6'
+    });
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+</script>
+
     <!-- your app's js / Google Api map & region set to SG otherwise Bishan will end up in China-->
     <script src="js/app.js"></script>
     <script src="http://maps.google.com/maps/api/js?key=AIzaSyB2G6qEo-jkzEgoge6znT9-hbMoyRe9iRI&region=SG&sensor=true"></script>
@@ -50,7 +83,7 @@
       </ion-side-menu-content>
       <ion-side-menu side="left">
         <ion-header-bar class="bar bar-balanced">
-          <h1 class="title">GeoMap</h1>
+          <h1 class="title">Menu</h1>
         </ion-header-bar>
         <!-- ionic content -->
         <ion-content>
@@ -58,15 +91,22 @@
             <ion-item>
               <div name="GeoForm">
               <form ng-submit="AutocompleteDirectionsHandler(fromLocation,toLocation)">
-                <input type="text" name="fromGeo" id="fromLoc" ng-model="fromLocation" autocomplete="off" ng-class="form-control" placeholder="where from?" ng-click="fromLocation = null" required ng-required="true">
-                <input type="text" name="toGeo" ng-model="toLocation" autocomplete="off" ng-class="form-control" placeholder="where to?" ng-click="toLocation = null" required ng-required="true">
+                <input type="text" name="fromGeo" id="fromLoc" ng-model="fromLocation" autocomplete="off" ng-class="form-control" placeholder="from where ?" ng-click="fromLocation = null" required ng-required="true">
+                <input type="text" name="toGeo" ng-model="toLocation" autocomplete="off" ng-class="form-control" placeholder="to where?" ng-click="toLocation = null" required ng-required="true">
                 <input type="submit" id="submit" value="Submit" class="button button-block button-positive" menu-close/>
               </form>
             </div>
             </ion-item>
             <ion-item menu-close ng-click="changeToggleState()" class="ion-ios-paw item-energized">  Track</ion-item>
+            <ion-item menu-close ng-click="fave1()" class="ion-android-star item-royal">  Favorite 1</ion-item>
+            <ion-item menu-close ng-click="fave2()" class="ion-android-star item-calm">  Favorite 2</ion-item>
           </ion-list>
         </ion-content>
+        <ion-footer-bar class="bar-assertive">
+          <div class="ion-power button" ng-click="logout()" menu-close>
+            Logout
+          </div>
+      </ion-footer-bar>
       </ion-side-menu>
   </body>
 </html>

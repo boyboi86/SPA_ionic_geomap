@@ -21,6 +21,19 @@
   opacity: 0.8;
 }
 
-.ion-search, .ion-ios-paw {
+.ion-search, .ion-ios-paw, .ion-power, .ion-android-star {
   font-size: 20px;
+}
+
+.padding {
+  margin-top: 30%;
+}
+
+.image {
+  width: 400px;
+}
+
+.title {
+  font-size: 50px;
+  text-align: center;
 }
