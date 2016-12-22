@@ -315,7 +315,7 @@ $scope.fave1 = function(){
   if(win.getItem('recentSearch') && !win.getItem('fave1')){
     win.setItem('fave1', win.getItem('recentSearch'));
   }
-    win.setItem('recentSearch', win.getItem('fave1'))
+    win.setItem('recentSearch', win.getItem('fave1'));
     $scope.findMeHandler();
 }
 
