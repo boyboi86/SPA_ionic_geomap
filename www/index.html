@@ -92,7 +92,7 @@
               <div name="GeoForm">
               <form ng-submit="AutocompleteDirectionsHandler(fromLocation,toLocation)">
                 <input type="text" name="fromGeo" id="fromLoc" ng-model="fromLocation" autocomplete="off" ng-class="form-control" placeholder="from where ?" ng-click="fromLocation = null" required ng-required="true">
-                <input type="text" name="toGeo" ng-model="toLocation" autocomplete="off" ng-class="form-control" placeholder="to where?" ng-click="toLocation = null" required ng-required="true">
+                <input type="text" name="toGeo" id = "toLoca" ng-model="toLocation" autocomplete="off" ng-class="form-control" placeholder="to where?" ng-click="toLocation = null" required ng-required="true">
                 <input type="submit" id="submit" value="Submit" class="button button-block button-positive" menu-close/>
               </form>
             </div>
